@@ -17,7 +17,17 @@ task "jar" do
   system("cd #{HERE} && jruby -S warble")
 end
 
+file "vendor/fswatch" do
+  system("cd #{HERE}/vendor && make")
+end
+
+desc "Watch for changes"
+task "watch" => "vendor/fswatch" do
+  system("killall fswatch")
+  system("fswatch #{HERE}/lib \"bash -c \\\"kill -SIGUSR2 \\\`ps u|grep [o]rg.jruby.Main|grep bin/puma|awk {\'print \\\$2\'}\\\`\\\"\" &")
+end
+
 desc "Run the project from jruby"
-task "run" do
+task "run" => "watch" do
   exec("cd #{HERE} && jruby -S bundle exec jruby -S bin/puma config/web.ru")
 end

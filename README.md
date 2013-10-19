@@ -6,6 +6,10 @@ Deploy a Sinatra app as a monolithic dependency-free JAR.
 
     jruby -S bundle install
     jruby -S rake 
+
+Hot reload for development purposes (OS X only):
+
+    jruby -S rake run
   
 ### Further reading
 
